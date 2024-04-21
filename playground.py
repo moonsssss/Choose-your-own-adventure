@@ -1,6 +1,8 @@
 import pygame
 import pygame_gui
 import sys
+import random
+import time
 
 pygame.init()
 
@@ -11,7 +13,7 @@ CLOCK = pygame.time.Clock()
 
 UI_MANAGER = pygame_gui.UIManager((WIDTH, HEIGHT))
 TEXT_INPUT = pygame_gui.elements.UITextEntryLine(
-    relative_rect=pygame.Rect((598, 400), (900, 50)),
+    relative_rect=pygame.Rect((600, 400), (387, 50)),
     manager=UI_MANAGER,
     object_id="main_text_entry"
 )
@@ -27,8 +29,10 @@ def shrinkmap(map):
     scaling_factor = HEIGHT/MAPHEIGHT
     finalmap = pygame.transform.smoothscale(map, (int(MAPHEIGHT*scaling_factor), HEIGHT))
     return(finalmap)
-Day0Map = pygame.image.load(r"C:\Users\Lochlann\Coding Games\Choose-your-own-adventure\Island.png")
-Day0Map = shrinkmap(Day0Map)
+Day1Map = pygame.image.load(r"C:\Users\Lochlann\Coding Games\Choose-your-own-adventure\Island.png")
+Day1Map = shrinkmap(Day1Map)
+Day2Map = pygame.image.load(r"C:\Users\Lochlann\Coding Games\Choose-your-own-adventure\island2.png")
+Day2Map = shrinkmap(Day2Map)
 class gameState:
     # add any variables for the character here
     user_response = ""  # store/remember the text response of the user
@@ -36,7 +40,7 @@ gs = gameState()
 
 def start_of_story(): 
     while True:
-        SCREEN.fill((80, 160, 250))
+        SCREEN.fill((178, 166, 142))
         # 60 frames per second / 1000
         # Controls how fast cursor blinks
         UI_REFRESH_RATE = CLOCK.tick(60) / 1000
@@ -56,13 +60,20 @@ def start_of_story():
 
                 if event.text == "1":
                     print("Go hunt")
+                    
                     go_hunt()
 
                 elif event.text == "2":
                     print("You keep going")
-                    day_2()
+                    chosen_lottery_ball = random.randint(1, 100)
+                    if chosen_lottery_ball < 25:
+                        death()
+                    else:
+                        day_2transition()
                 else:
                     print("This isn't an option. ")
+
+                
                     
 
                 # TODO  
@@ -88,14 +99,16 @@ def start_of_story():
         SCREEN.blit(first_prompt, first_prompt_rect)
         SCREEN.blit(option_1, option_1_rect)
         SCREEN.blit(option_2, option_2_rect)
-        SCREEN.blit(Day0Map, (0,0))
+        SCREEN.blit(Day1Map, (0,0))
+       
+        
 
 
         UI_MANAGER.draw_ui(SCREEN)
         pygame.display.update()
 
 
-def day_2():
+def day_2transition():
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -107,10 +120,69 @@ def day_2():
         your_text = verdana_50.render(f"Day 2", True, "black");
         your_text_rect = your_text.get_rect(center=(WIDTH/2, HEIGHT/2))
         SCREEN.blit(your_text, your_text_rect)
+        
+  
+        CLOCK.tick(60)
+        
+        pygame.display.update()
+
+        time.sleep(2)
+
+        day_2()
+
+def day_2():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        SCREEN.fill((178, 166, 142))
+ 
+        second_prompt = verdana_50.render("This is your second day, you have two options: ", True, "black");
+        second_prompt_rect = second_prompt.get_rect(topleft=(600, 5))
+
+        option_1 = verdana_50.render("1.You have to cross a river, you can go around it and \n lose a day .", True, "black")
+        option_1_rect = second_prompt.get_rect(topleft=(second_prompt_rect.left, second_prompt_rect.bottom + 10))
+
+        option_2 = verdana_50.render("2. Swim trough it and have a 10% chance of dying!", True, "black")
+        option_2_rect = second_prompt.get_rect(topleft=(option_1_rect.left, option_1_rect.bottom + 25))
+
+        SCREEN.blit(second_prompt, second_prompt_rect)
+        SCREEN.blit(option_1, option_1_rect)
+        SCREEN.blit(option_2, option_2_rect)
+        SCREEN.blit(Day2Map, (0,0))
+        
+  
+        CLOCK.tick(60)
+        
+        pygame.display.update()
+        
+        
+        
+
+
+           
+  
+
+def death():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        SCREEN.fill((255, 0, 0))
+ 
+        your_text = verdana_50.render(f"You Died!", True, "black");
+        your_text_rect = your_text.get_rect(center=(WIDTH/2, HEIGHT/2))
+        SCREEN.blit(your_text, your_text_rect)
+
 
         CLOCK.tick(60)
 
         pygame.display.update()
+
 
 
 
