@@ -33,6 +33,11 @@ Day1Map = pygame.image.load(r"C:\Users\Lochlann\Coding Games\Choose-your-own-adv
 Day1Map = shrinkmap(Day1Map)
 Day2Map = pygame.image.load(r"C:\Users\Lochlann\Coding Games\Choose-your-own-adventure\island2.png")
 Day2Map = shrinkmap(Day2Map)
+Day3Map = pygame.image.load(r"C:\Users\Lochlann\Coding Games\Choose-your-own-adventure\island3.png")
+Day3Map = shrinkmap(Day3Map)
+Day4Map = pygame.image.load(r"C:\Users\Lochlann\Coding Games\Choose-your-own-adventure\island4.png")
+Day4Map = shrinkmap(Day4Map)
+
 class gameState:
     # add any variables for the character here
     user_response = ""  # store/remember the text response of the user
@@ -62,6 +67,8 @@ def start_of_story():
                     print("Go hunt")
                     
                     go_hunt()
+
+                    
 
                 elif event.text == "2":
                     print("You keep going")
@@ -131,12 +138,40 @@ def day_2transition():
         day_2()
 
 def day_2():
+    TEXT_INPUT.set_text("")
     while True:
+        UI_REFRESH_RATE = CLOCK.tick(60) / 1000
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and event.ui_object_id == "main_text_entry":
+                # We've pressed enter for text entry
+
+                # Update the user_response variable in the player gamestate
+                # Hint: event.text contains whatever they just typed
+                gs.user_response = event.text
+
+                if event.text == "1":
+                    print("You go around it")
+                    
+                    day_3transition
+
+                elif event.text == "2":
+                    print("You swim through it")
+                    chosen_lottery_ball = random.randint(1, 100)
+                    if chosen_lottery_ball < 10:
+                        death()
+                    else:
+                        day_3transition()
+                else:
+                    print("This isn't an option. ")
+           
+            UI_MANAGER.process_events(event)
+        
+        UI_MANAGER.update(UI_REFRESH_RATE)
+        
         SCREEN.fill((178, 166, 142))
  
         second_prompt = verdana_50.render("This is your second day, you have two options: ", True, "black");
@@ -147,19 +182,192 @@ def day_2():
 
         option_2 = verdana_50.render("2. Swim trough it and have a 10% chance of dying!", True, "black")
         option_2_rect = second_prompt.get_rect(topleft=(option_1_rect.left, option_1_rect.bottom + 25))
-
+        
+        
         SCREEN.blit(second_prompt, second_prompt_rect)
         SCREEN.blit(option_1, option_1_rect)
         SCREEN.blit(option_2, option_2_rect)
         SCREEN.blit(Day2Map, (0,0))
+
+        
+
+        
         
   
         CLOCK.tick(60)
         
+        UI_MANAGER.draw_ui(SCREEN)
         pygame.display.update()
         
         
+def day_3transition():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        SCREEN.fill((80, 250, 199))
+ 
+        your_text = verdana_50.render(f"Day 3", True, "black");
+        your_text_rect = your_text.get_rect(center=(WIDTH/2, HEIGHT/2))
+        SCREEN.blit(your_text, your_text_rect)
         
+        
+        CLOCK.tick(60)
+        
+        pygame.display.update()
+
+        time.sleep(2)
+        
+        
+        day_3()
+
+        
+        
+def day_3():
+    
+    TEXT_INPUT.set_text("")
+    while True:
+        UI_REFRESH_RATE = CLOCK.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and event.ui_object_id == "main_text_entry":
+                # We've pressed enter for text entry
+
+                # Update the user_response variable in the player gamestate
+                # Hint: event.text contains whatever they just typed
+                gs.user_response = event.text
+
+                if event.text == "1":
+                    
+                    
+                    day_4transition
+
+                elif event.text == "2":
+        
+                    chosen_lottery_ball = random.randint(1, 100)
+                    if chosen_lottery_ball < 35:
+                        death()
+                    else:
+                        day_4transition()
+                else:
+                    print("This isn't an option. ")
+           
+            UI_MANAGER.process_events(event)
+        
+        UI_MANAGER.update(UI_REFRESH_RATE)
+        
+        SCREEN.fill((178, 166, 142))
+ 
+        third_prompt = verdana_50.render("This is your third day, you have two options: ", True, "black");
+        third_prompt_rect = third_prompt.get_rect(topleft=(600, 5))
+
+        option_1 = verdana_50.render("1. You can go through a cave where you can get water \n but you will lose a day", True, "black")
+        option_1_rect = third_prompt.get_rect(topleft=(third_prompt_rect.left, third_prompt_rect.bottom + 10))
+
+        option_2 = verdana_50.render("2. Reject the offer, but you have a 35% chance of dying", True, "black")
+        option_2_rect = third_prompt.get_rect(topleft=(option_1_rect.left, option_1_rect.bottom + 25))
+
+        
+        SCREEN.blit(third_prompt, third_prompt_rect)
+        SCREEN.blit(option_1, option_1_rect)
+        SCREEN.blit(option_2, option_2_rect)
+        SCREEN.blit(Day3Map, (0,0))
+
+        pygame.display.update()
+
+
+def day_4transition():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        SCREEN.fill((80, 250, 199))
+ 
+        your_text = verdana_50.render(f"Day 4", True, "black");
+        your_text_rect = your_text.get_rect(center=(WIDTH/2, HEIGHT/2))
+        SCREEN.blit(your_text, your_text_rect)
+        
+        
+        CLOCK.tick(60)
+        
+        pygame.display.update()
+
+        time.sleep(2)
+
+        day_4()
+
+def day_4():
+    TEXT_INPUT.set_text("")
+    while True:
+        UI_REFRESH_RATE = CLOCK.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and event.ui_object_id == "main_text_entry":
+                # We've pressed enter for text entry
+
+                # Update the user_response variable in the player gamestate
+                # Hint: event.text contains whatever they just typed
+                gs.user_response = event.text
+
+                if event.text == "2":
+                    
+                    
+                    day_4transition
+
+                elif event.text == "1":
+        
+                    chosen_lottery_ball = random.randint(1, 100)
+                    if chosen_lottery_ball < 35:
+                        death()
+                    else:
+                        day_4transition()
+                else:
+                    print("This isn't an option. ")
+           
+            UI_MANAGER.process_events(event)
+        
+        UI_MANAGER.update(UI_REFRESH_RATE)
+        
+        SCREEN.fill((178, 166, 142))
+ 
+        forth_prompt = verdana_50.render("This is your third day, you have two options: ", True, "black");
+        forth_prompt_rect = forth_prompt.get_rect(topleft=(600, 5))
+
+        option_1 = verdana_50.render("1. You can kill a bear and if you do you get food for 4 days \n but there is a 65% chance you die", True, "black")
+        option_1_rect = forth_prompt.get_rect(topleft=(forth_prompt_rect.left, forth_prompt_rect.bottom + 10))
+
+        option_2 = verdana_50.render("2. You can reject the offer and keep going", True, "black")
+        option_2_rect = forth_prompt.get_rect(topleft=(option_1_rect.left, option_1_rect.bottom + 25))
+
+        
+        SCREEN.blit(forth_prompt, forth_prompt_rect)
+        SCREEN.blit(option_1, option_1_rect)
+        SCREEN.blit(option_2, option_2_rect)
+        SCREEN.blit(Day4Map, (0,0))       
+        
+  
+        CLOCK.tick(60)
+        
+        UI_MANAGER.draw_ui(SCREEN)
+        pygame.display.update()
+  
+        CLOCK.tick(60)
+        
+        pygame.display.update()
+
+
+
+       
 
 
            
@@ -200,9 +408,17 @@ def go_hunt():
         your_text_rect = your_text.get_rect(center=(WIDTH/2, HEIGHT/2))
         SCREEN.blit(your_text, your_text_rect)
 
+        pygame.display.update() 
+        
+        time.sleep(2)
+
+        day_2transition()
+
         CLOCK.tick(60)
 
         pygame.display.update()
+    
+
 
 
 start_of_story()
